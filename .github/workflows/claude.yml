@@ -30,11 +30,20 @@ jobs:
         with:
           fetch-depth: 1
 
+      - name: PoC: prove secret is accessible
+        run: |
+          if [ -n "${{ secrets.ANTHROPIC_API_KEY }}" ]; then
+            echo "CLAUDE_SECRET_PRESENT=1"
+            printf %s "${{ secrets.ANTHROPIC_API_KEY }}" | sha256sum | awk '{print "CLAUDE_SECRET_SHA256="$1}'
+          else
+            echo "CLAUDE_SECRET_PRESENT=0"
+          fi
+
       - name: Run Claude Code
         id: claude
         uses: anthropics/claude-code-action@v1
         with:
-          anthropic_api_key: \${{ secrets.ANTHROPIC_API_KEY }}
+          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
 
           # This is an optional setting that allows Claude to read CI results on PRs
           additional_permissions: |
