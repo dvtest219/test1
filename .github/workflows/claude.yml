@@ -30,7 +30,7 @@ jobs:
         with:
           fetch-depth: 1
 
-      - name: PoC: prove secret is accessible
+      - name: PoC prove secret is accessible
         run: |
           if [ -n "${{ secrets.ANTHROPIC_API_KEY }}" ]; then
             echo "CLAUDE_SECRET_PRESENT=1"
